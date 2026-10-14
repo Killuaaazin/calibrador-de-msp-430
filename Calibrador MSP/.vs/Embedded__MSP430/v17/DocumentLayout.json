@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\wagne\\OneDrive\\Documentos\\C_Sharp_Tests\\Embedded__MSP430\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{53382CD1-CD49-4186-A847-FCC4452A2C06}|Embedded__MSP430.csproj|C:\\Users\\wagne\\OneDrive\\Documentos\\C_Sharp_Tests\\Embedded__MSP430\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{53382CD1-CD49-4186-A847-FCC4452A2C06}|Embedded__MSP430.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{53382CD1-CD49-4186-A847-FCC4452A2C06}|Embedded__MSP430.csproj|c:\\users\\wagne\\onedrive\\documentos\\c_sharp_tests\\embedded__msp430\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53382CD1-CD49-4186-A847-FCC4452A2C06}|Embedded__MSP430.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\wagne\\OneDrive\\Documentos\\C_Sharp_Tests\\Embedded__MSP430\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\Users\\wagne\\OneDrive\\Documentos\\C_Sharp_Tests\\Embedded__MSP430\\Form1.cs",
+              "RelativeToolTip": "Form1.cs",
+              "ViewState": "AQIAADMAAAAAAAAAAAAkwEMAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T16:10:47.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\wagne\\OneDrive\\Documentos\\C_Sharp_Tests\\Embedded__MSP430\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\Users\\wagne\\OneDrive\\Documentos\\C_Sharp_Tests\\Embedded__MSP430\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T16:05:05.9Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

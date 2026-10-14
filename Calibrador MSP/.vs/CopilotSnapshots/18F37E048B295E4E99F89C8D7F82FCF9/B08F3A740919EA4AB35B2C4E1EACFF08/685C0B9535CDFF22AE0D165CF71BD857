@@ -1,0 +1,169 @@
+﻿using System;
+using System.IO.Ports;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Embedded__MSP430
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            Baud_comboBox.Text = "2400";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Ports_comboBox.Items.Clear();
+            string[] ports = SerialPort.GetPortNames();
+            Ports_comboBox.Items.AddRange(ports);
+            Connect_bt.Enabled = true;
+            Disconnect_bt.Enabled = false;
+        }
+
+        private void Connect_bt_Click(object sender, EventArgs e)
+        {
+            if (ConnectPort())
+            {
+                Connect_bt.Enabled = false;
+                Disconnect_bt.Enabled = true;
+                Ports_comboBox.Enabled = false;
+                Baud_comboBox.Enabled = false;
+                serialPort.DataReceived -= serialPort_DataReceived;
+                serialPort.DataReceived += serialPort_DataReceived;
+            }
+        }
+
+        private void Disconnect_bt_Click(object sender, EventArgs e)
+        {
+            serialPort.Close();
+            Ports_comboBox.Enabled = true;
+            Baud_comboBox.Enabled = true;
+            Connect_bt.Enabled = true;
+            Disconnect_bt.Enabled = false;
+        }
+
+        private bool ConnectPort()
+        {
+            try
+            {
+                if (Ports_comboBox.Text != "" && Baud_comboBox.Text != "")
+                {
+                    serialPort.PortName = Ports_comboBox.Text;
+                    serialPort.BaudRate = int.Parse(Baud_comboBox.Text);
+                    serialPort.Open();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return false;
+        }
+
+        private void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            // Vazio, a leitura ocorre diretamente dentro da Task de calibração
+        }
+
+        // FUNÇÃO EXCLUSIVA DE CALIBRAÇÃO
+        public async void calibrarBtn_Click(object sender, EventArgs e)
+        {
+            if (serialPort == null || !serialPort.IsOpen) return;
+
+            calibrarBtn.Enabled = false;
+            serialPort.DataReceived -= serialPort_DataReceived;
+
+            // 1. Envia a configuração da frequência desejada
+            // Calcula o valor de reload em 16 bits (big-endian) como: reload = (frequencia_em_hz) / (baudrate)
+            // Ex.: 1 MHz / 2400bps = 416 => 0x01A0 (bytes: 0x01, 0xA0)
+            int freqMHz = 1;
+            if (!string.IsNullOrWhiteSpace(Frequency_comboBox.Text))
+            {
+                // espera formato como "1 MHz" ou "8 MHz"
+                var parts = Frequency_comboBox.Text.Split(' ');
+                int parsed;
+                if (parts.Length > 0 && int.TryParse(parts[0], out parsed))
+                    freqMHz = parsed;
+            }
+
+            int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 2400;
+            long freqHz = (long)freqMHz * 1000000L;
+            int reload = (int)(freqHz / baudRate);
+            if (reload < 1) reload = 1;
+
+            byte byte_alto = (byte)((reload >> 8) & 0xFF);
+            byte byte_baixo = (byte)(reload & 0xFF);
+            byte[] config_freq = new byte[] { byte_alto, byte_baixo };
+            serialPort.Write(config_freq, 0, 2);
+
+            // 2. Dá um tempo para o MSP430 ler os 2 bytes e se preparar para medir
+            Thread.Sleep(100);
+
+            // 3. Prepara um "trem" de pulsos contínuo. 
+            // 150 bytes geram uma onda quadrada perfeita por tempo suficiente para a calibração.
+            byte[] trem_de_pulsos = new byte[150];
+            for (int i = 0; i < trem_de_pulsos.Length; i++)
+            {
+                trem_de_pulsos[i] = 0x55;
+            }
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    // Dispara todos os 150 bytes de uma SÓ vez, sem nenhum Sleep no meio!
+                    serialPort.Write(trem_de_pulsos, 0, trem_de_pulsos.Length);
+
+                    bool calibrado = false;
+                    int timeout = 0;
+
+                    // Fica escutando a resposta 'q' do MSP430 (com limite de 2 segundos)
+                    while (!calibrado && timeout < 20)
+                    {
+                        Thread.Sleep(100);
+                        timeout++;
+
+                        if (serialPort.BytesToRead > 0)
+                        {
+                            string resposta = serialPort.ReadExisting();
+                            if (resposta.Contains("q"))
+                            {
+                                calibrado = true;
+                            }
+                        }
+                    }
+
+                    this.Invoke(new Action(() =>
+                    {
+                        if (calibrado)
+                            MessageBox.Show("Calibração concluída com sucesso!");
+                        else
+                            MessageBox.Show("Falha: O MSP430 não respondeu. Resete a placa e tente novamente.");
+
+                        serialPort.DataReceived += serialPort_DataReceived;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    this.Invoke(new Action(() => MessageBox.Show("Erro: " + ex.Message)));
+                }
+                finally
+                {
+                    this.Invoke(new Action(() => calibrarBtn.Enabled = true));
+                }
+            });
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
+        }
+    }
+}

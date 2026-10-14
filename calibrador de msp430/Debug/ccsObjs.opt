@@ -1,0 +1,5 @@
+"./Est.obj"
+"./main.obj"
+"../Library_release.lib"
+"../lnk_msp430g2553.cmd"
+-llibc.a

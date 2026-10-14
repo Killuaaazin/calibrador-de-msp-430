@@ -1,0 +1,411 @@
+﻿namespace Embedded__MSP430
+{
+    partial class Form1
+    {
+        /// <summary>
+        /// Variável de designer necessária.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Limpar os recursos que estão sendo usados.
+        /// </summary>
+        /// <param name="disposing">true se for necessário descartar os recursos gerenciados; caso contrário, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Código gerado pelo Windows Form Designer
+
+        /// <summary>
+        /// Método necessário para suporte ao Designer - não modifique 
+        /// o conteúdo deste método com o editor de código.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cont = new System.Windows.Forms.Label();
+            this.velocidade = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.max_textBox = new System.Windows.Forms.TextBox();
+            this.Reset_bt = new System.Windows.Forms.Button();
+            this.counter_label = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.Calibre2 = new System.Windows.Forms.Label();
+            this.Calibre1 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.calibrarBtn = new System.Windows.Forms.Button();
+            this.conexion_bar = new System.Windows.Forms.ProgressBar();
+            this.Disconnect_bt = new System.Windows.Forms.Button();
+            this.Connect_bt = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Baud_comboBox = new System.Windows.Forms.ComboBox();
+            this.Ports_comboBox = new System.Windows.Forms.ComboBox();
+            this.serialPort = new System.IO.Ports.SerialPort(this.components);
+            this.label6 = new System.Windows.Forms.Label();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(712, 382);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.Reset_bt);
+            this.tabPage1.Controls.Add(this.cont);
+            this.tabPage1.Controls.Add(this.velocidade);
+            this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.max_textBox);
+            this.tabPage1.Controls.Add(this.counter_label);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage1.Size = new System.Drawing.Size(704, 356);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Contador";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // cont
+            // 
+            this.cont.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cont.AutoSize = true;
+            this.cont.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cont.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.cont.Location = new System.Drawing.Point(180, 130);
+            this.cont.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.cont.Name = "cont";
+            this.cont.Size = new System.Drawing.Size(131, 27);
+            this.cont.TabIndex = 8;
+            this.cont.Text = "CONTAGEM";
+            this.cont.Visible = false;
+            this.cont.Click += new System.EventHandler(this.label8_Click_1);
+            // 
+            // velocidade
+            // 
+            this.velocidade.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.velocidade.AutoSize = true;
+            this.velocidade.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.velocidade.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.velocidade.Location = new System.Drawing.Point(320, 68);
+            this.velocidade.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.velocidade.Name = "velocidade";
+            this.velocidade.Size = new System.Drawing.Size(57, 27);
+            this.velocidade.TabIndex = 6;
+            this.velocidade.Text = "RPM";
+            this.velocidade.Visible = false;
+            this.velocidade.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.label5.Location = new System.Drawing.Point(50, 68);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(223, 25);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Velocidade Instantanea:";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold);
+            this.label4.Location = new System.Drawing.Point(300, 10);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(126, 39);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Esteira";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.label3.Location = new System.Drawing.Point(50, 192);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 17);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Max.:";
+            // 
+            // max_textBox
+            // 
+            this.max_textBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.max_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.max_textBox.Location = new System.Drawing.Point(100, 188);
+            this.max_textBox.Margin = new System.Windows.Forms.Padding(2);
+            this.max_textBox.Name = "max_textBox";
+            this.max_textBox.Size = new System.Drawing.Size(180, 23);
+            this.max_textBox.TabIndex = 2;
+            this.max_textBox.Text = "10";
+            this.max_textBox.TextChanged += new System.EventHandler(this.max_textBox_TextChanged);
+            // 
+            // Reset_bt
+            // 
+            this.Reset_bt.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Reset_bt.Enabled = false;
+            this.Reset_bt.Location = new System.Drawing.Point(300, 240);
+            this.Reset_bt.Margin = new System.Windows.Forms.Padding(2);
+            this.Reset_bt.Name = "Reset_bt";
+            this.Reset_bt.Size = new System.Drawing.Size(120, 40);
+            this.Reset_bt.TabIndex = 1;
+            this.Reset_bt.Text = "RESET";
+            this.Reset_bt.UseVisualStyleBackColor = true;
+            this.Reset_bt.Click += new System.EventHandler(this.Reset_bt_Click);
+            // 
+            // counter_label
+            // 
+            this.counter_label.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.counter_label.AutoSize = true;
+            this.counter_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.counter_label.Location = new System.Drawing.Point(50, 130);
+            this.counter_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.counter_label.Name = "counter_label";
+            this.counter_label.Size = new System.Drawing.Size(86, 25);
+            this.counter_label.TabIndex = 0;
+            this.counter_label.Text = "Objetos:";
+            this.counter_label.Click += new System.EventHandler(this.counter_label_Click);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.label6);
+            this.tabPage2.Controls.Add(this.Calibre2);
+            this.tabPage2.Controls.Add(this.Calibre1);
+            this.tabPage2.Controls.Add(this.label7);
+            this.tabPage2.Controls.Add(this.calibrarBtn);
+            this.tabPage2.Controls.Add(this.conexion_bar);
+            this.tabPage2.Controls.Add(this.Disconnect_bt);
+            this.tabPage2.Controls.Add(this.Connect_bt);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.Baud_comboBox);
+            this.tabPage2.Controls.Add(this.Ports_comboBox);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Size = new System.Drawing.Size(424, 356);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Conexão";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // Calibre2
+            // 
+            this.Calibre2.AutoSize = true;
+            this.Calibre2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Calibre2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.Calibre2.Location = new System.Drawing.Point(176, 129);
+            this.Calibre2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Calibre2.Name = "Calibre2";
+            this.Calibre2.Size = new System.Drawing.Size(65, 22);
+            this.Calibre2.TabIndex = 10;
+            this.Calibre2.Text = "Valores";
+            this.Calibre2.Visible = false;
+            // 
+            // Calibre1
+            // 
+            this.Calibre1.AutoSize = true;
+            this.Calibre1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Calibre1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.Calibre1.Location = new System.Drawing.Point(107, 129);
+            this.Calibre1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Calibre1.Name = "Calibre1";
+            this.Calibre1.Size = new System.Drawing.Size(65, 22);
+            this.Calibre1.TabIndex = 9;
+            this.Calibre1.Text = "Valores";
+            this.Calibre1.Visible = false;
+            this.Calibre1.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(104, 106);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(112, 13);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Valores de calibração:";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
+            // 
+            // calibrarBtn
+            // 
+            this.calibrarBtn.Location = new System.Drawing.Point(107, 219);
+            this.calibrarBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.calibrarBtn.Name = "calibrarBtn";
+            this.calibrarBtn.Size = new System.Drawing.Size(84, 53);
+            this.calibrarBtn.TabIndex = 7;
+            this.calibrarBtn.Text = "Calibrar";
+            this.calibrarBtn.UseVisualStyleBackColor = true;
+            this.calibrarBtn.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // conexion_bar
+            // 
+            this.conexion_bar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.conexion_bar.Location = new System.Drawing.Point(2, 342);
+            this.conexion_bar.Margin = new System.Windows.Forms.Padding(2);
+            this.conexion_bar.Name = "conexion_bar";
+            this.conexion_bar.Size = new System.Drawing.Size(420, 12);
+            this.conexion_bar.TabIndex = 6;
+            // 
+            // Disconnect_bt
+            // 
+            this.Disconnect_bt.Location = new System.Drawing.Point(199, 162);
+            this.Disconnect_bt.Margin = new System.Windows.Forms.Padding(2);
+            this.Disconnect_bt.Name = "Disconnect_bt";
+            this.Disconnect_bt.Size = new System.Drawing.Size(84, 53);
+            this.Disconnect_bt.TabIndex = 5;
+            this.Disconnect_bt.Text = "Desconectar";
+            this.Disconnect_bt.UseVisualStyleBackColor = true;
+            this.Disconnect_bt.Click += new System.EventHandler(this.Disconnect_bt_Click);
+            // 
+            // Connect_bt
+            // 
+            this.Connect_bt.Location = new System.Drawing.Point(107, 162);
+            this.Connect_bt.Margin = new System.Windows.Forms.Padding(2);
+            this.Connect_bt.Name = "Connect_bt";
+            this.Connect_bt.Size = new System.Drawing.Size(84, 53);
+            this.Connect_bt.TabIndex = 4;
+            this.Connect_bt.Text = "Conectar";
+            this.Connect_bt.UseVisualStyleBackColor = true;
+            this.Connect_bt.Click += new System.EventHandler(this.Connect_bt_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(104, 85);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Baud Rate:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(104, 52);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "COM Ports:";
+            // 
+            // Baud_comboBox
+            // 
+            this.Baud_comboBox.FormattingEnabled = true;
+            this.Baud_comboBox.Location = new System.Drawing.Point(182, 83);
+            this.Baud_comboBox.Margin = new System.Windows.Forms.Padding(2);
+            this.Baud_comboBox.Name = "Baud_comboBox";
+            this.Baud_comboBox.Size = new System.Drawing.Size(92, 21);
+            this.Baud_comboBox.TabIndex = 1;
+            this.Baud_comboBox.SelectedIndexChanged += new System.EventHandler(this.Baud_comboBox_SelectedIndexChanged);
+            // 
+            // Ports_comboBox
+            // 
+            this.Ports_comboBox.FormattingEnabled = true;
+            this.Ports_comboBox.Location = new System.Drawing.Point(182, 50);
+            this.Ports_comboBox.Margin = new System.Windows.Forms.Padding(2);
+            this.Ports_comboBox.Name = "Ports_comboBox";
+            this.Ports_comboBox.Size = new System.Drawing.Size(92, 21);
+            this.Ports_comboBox.TabIndex = 0;
+            this.Ports_comboBox.SelectedIndexChanged += new System.EventHandler(this.Ports_comboBox_SelectedIndexChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Corbel", 20F);
+            this.label6.Location = new System.Drawing.Point(152, 2);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(131, 33);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Calibração";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(712, 382);
+            this.Controls.Add(this.tabControl1);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "Form1";
+            this.Text = " Esteira";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ProgressBar conexion_bar;
+        private System.Windows.Forms.Button Disconnect_bt;
+        private System.Windows.Forms.Button Connect_bt;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox Baud_comboBox;
+        private System.Windows.Forms.ComboBox Ports_comboBox;
+        private System.IO.Ports.SerialPort serialPort;
+        private System.Windows.Forms.Label counter_label;
+        private System.Windows.Forms.Button Reset_bt;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox max_textBox;
+        private System.Windows.Forms.Button calibrarBtn;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label velocidade;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label Calibre1;
+        private System.Windows.Forms.Label cont;
+        private System.Windows.Forms.Label Calibre2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ImageList imageList1;
+    }
+}
+

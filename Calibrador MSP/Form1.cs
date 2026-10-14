@@ -1,0 +1,225 @@
+﻿using System;
+using System.IO.Ports;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+
+namespace Embedded__MSP430
+{
+    public partial class Form1 : Form
+    {
+        private string serialBuffer = string.Empty;
+        public Form1()
+        {
+            InitializeComponent();
+            Baud_comboBox.Text = "2400";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Ports_comboBox.Items.Clear();
+            string[] ports = SerialPort.GetPortNames();
+            Ports_comboBox.Items.AddRange(ports);
+            Connect_bt.Enabled = true;
+            Disconnect_bt.Enabled = false;
+        }
+
+        private void Connect_bt_Click(object sender, EventArgs e)
+        {
+            if (ConnectPort())
+            {
+                Connect_bt.Enabled = false;
+                Disconnect_bt.Enabled = true;
+                Ports_comboBox.Enabled = false;
+                Baud_comboBox.Enabled = false;
+                serialPort.DataReceived -= serialPort_DataReceived;
+                serialPort.DataReceived += serialPort_DataReceived;
+            }
+        }
+
+        private void Disconnect_bt_Click(object sender, EventArgs e)
+        {
+            serialPort.Close();
+            Ports_comboBox.Enabled = true;
+            Baud_comboBox.Enabled = true;
+            Connect_bt.Enabled = true;
+            Disconnect_bt.Enabled = false;
+        }
+
+        private bool ConnectPort()
+        {
+            try
+            {
+                if (Ports_comboBox.Text != "" && Baud_comboBox.Text != "")
+                {
+                    serialPort.PortName = Ports_comboBox.Text;
+                    serialPort.BaudRate = int.Parse(Baud_comboBox.Text);
+                    serialPort.Open();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return false;
+        }
+
+        private void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            // Lê dados recebidos e tenta extrair pares de valores de calibração
+            try
+            {
+                string data = serialPort.ReadExisting();
+                if (string.IsNullOrEmpty(data)) return;
+
+                serialBuffer += data;
+
+                // Encontra todos os inteiros no buffer
+                var matches = Regex.Matches(serialBuffer, "-?\\d+");
+                if (matches.Count >= 2)
+                {
+                    int lastIdx = matches.Count - 1;
+                    int secondLastIdx = matches.Count - 2;
+                    int val1, val2;
+                    if (int.TryParse(matches[secondLastIdx].Value, out val1) && int.TryParse(matches[lastIdx].Value, out val2))
+                    {
+                        int removeUpTo = matches[lastIdx].Index + matches[lastIdx].Length;
+                        if (removeUpTo <= serialBuffer.Length)
+                            serialBuffer = serialBuffer.Substring(removeUpTo);
+
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            calib1TextBox.Text = val1.ToString();
+                            calib2TextBox.Text = val2.ToString();
+                        }));
+                    }
+                }
+            }
+            catch
+            {
+                // Ignora erros leves
+            }
+        }
+
+        // FUNÇÃO EXCLUSIVA DE CALIBRAÇÃO ATUALIZADA
+        public async void calibrarBtn_Click(object sender, EventArgs e)
+        {
+            if (serialPort == null || !serialPort.IsOpen) return;
+
+            calibrarBtn.Enabled = false;
+            serialPort.DataReceived -= serialPort_DataReceived;
+
+            serialPort.DiscardInBuffer();
+            serialPort.DiscardOutBuffer();
+
+            int freqMHz = 1;
+            if (!string.IsNullOrWhiteSpace(Frequency_comboBox.Text))
+            {
+                var parts = Frequency_comboBox.Text.Split(' ');
+                if (parts.Length > 0 && int.TryParse(parts[0], out int parsed))
+                    freqMHz = parsed;
+            }
+
+            int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 2400;
+            long freqHz = (long)freqMHz * 1000000L;
+            int reload = (int)(freqHz / baudRate);
+            if (reload < 1) reload = 1;
+
+            byte byte_alto = (byte)((reload >> 8) & 0xFF);
+            byte byte_baixo = (byte)(reload & 0xFF);
+            byte[] pulso = new byte[] { 0x55 };
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    // ETAPA 1: Envia pulsos para a Pré-Calibração forçada do MSP430
+                    bool msp_pronto = false;
+                    int timeout = 0;
+                    while (!msp_pronto && timeout < 50)
+                    {
+                        serialPort.Write(pulso, 0, 1);
+                        Thread.Sleep(50);
+                        if (serialPort.BytesToRead > 0)
+                        {
+                            if (serialPort.ReadExisting().Contains("R"))
+                            {
+                                msp_pronto = true;
+                            }
+                        }
+                        timeout++;
+                    }
+                    if (!msp_pronto) throw new Exception("O MSP430 não respondeu à pré-calibração.");
+
+                    // ETAPA 2: ENVIO DA CONFIGURAÇÃO COM CHAVE ANTI-LIXO (0xAA)
+                    byte[] config_msg = new byte[] { 0xAA, byte_alto, byte_baixo };
+                    serialPort.Write(config_msg, 0, 3);
+
+                    Thread.Sleep(100);
+
+                    // ETAPA 3: Calibração Final e Captura Direta dos Bytes
+                    bool calibrado = false;
+                    byte val1Bytes = 0;
+                    byte val2Bytes = 0;
+
+                    while (!calibrado && timeout < 50)
+                    {
+                        serialPort.Write(pulso, 0, 1);
+                        Thread.Sleep(50);
+
+                        // Se o MSP430 terminou, ele envia 'q' seguido de DCOCTL e BCSCTL1 (3 bytes no total)
+                        if (serialPort.BytesToRead >= 3)
+                        {
+                            byte resp1 = (byte)serialPort.ReadByte();
+                            byte resp2 = (byte)serialPort.ReadByte(); // DCOCTL
+                            byte resp3 = (byte)serialPort.ReadByte(); // BCSCTL1
+
+                            if (resp1 == 'q')
+                            {
+                                val1Bytes = resp2;
+                                val2Bytes = resp3;
+                                calibrado = true;
+                            }
+                        }
+                        timeout++;
+                    }
+
+                    this.Invoke(new Action(() =>
+                    {
+                        if (calibrado)
+                        {
+                            calib1TextBox.Text = val1Bytes.ToString();
+                            calib2TextBox.Text = val2Bytes.ToString();
+                            MessageBox.Show("Calibração concluída com sucesso!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Falha na calibração final.");
+                        }
+
+                        serialPort.DataReceived += serialPort_DataReceived;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    this.Invoke(new Action(() => MessageBox.Show("Erro: " + ex.Message)));
+                    this.Invoke(new Action(() => serialPort.DataReceived += serialPort_DataReceived));
+                }
+                finally
+                {
+                    this.Invoke(new Action(() => calibrarBtn.Enabled = true));
+                }
+            });
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
+        }
+    }
+}

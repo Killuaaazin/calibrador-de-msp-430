@@ -1,0 +1,50 @@
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe.config
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\bin\Debug\Embedded__MSP430.pdb
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.AssemblyReference.cache
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\obj\Debug\Embedded__MSP430.Form1.resources
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\obj\Debug\Embedded__MSP430.Properties.Resources.resources
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.GenerateResource.cache
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\obj\Debug\Embedded__MSP430.exe
+C:\Users\wagne\OneDrive\Documentos\C_Sharp_Tests\Embedded__MSP430\obj\Debug\Embedded__MSP430.pdb
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe.config
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\bin\Debug\Embedded__MSP430.pdb
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.AssemblyReference.cache
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\obj\Debug\Embedded__MSP430.Form1.resources
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\obj\Debug\Embedded__MSP430.Properties.Resources.resources
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.GenerateResource.cache
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\obj\Debug\Embedded__MSP430.exe
+C:\Users\evert\Downloads\MSP430_Csharp_M14A4__WR__files\Csharp_M14A4__WR__files\Embedded__MSP430\obj\Debug\Embedded__MSP430.pdb
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe.config
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\bin\Debug\Embedded__MSP430.pdb
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.AssemblyReference.cache
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.Form1.resources
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.Properties.Resources.resources
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.GenerateResource.cache
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.exe
+C:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.pdb
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe.config
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\bin\Debug\Embedded__MSP430.pdb
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.AssemblyReference.cache
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.Form1.resources
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.Properties.Resources.resources
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.GenerateResource.cache
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.exe
+E:\Users\Killua\Desktop\arquitetura de sistemas computacionais\Etapa1\Embedded__MSP430\obj\Debug\Embedded__MSP430.pdb
+C:\Users\LASI\Desktop\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe.config
+C:\Users\LASI\Desktop\Embedded__MSP430\bin\Debug\Embedded__MSP430.exe
+C:\Users\LASI\Desktop\Embedded__MSP430\bin\Debug\Embedded__MSP430.pdb
+C:\Users\LASI\Desktop\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.AssemblyReference.cache
+C:\Users\LASI\Desktop\Embedded__MSP430\obj\Debug\Embedded__MSP430.Form1.resources
+C:\Users\LASI\Desktop\Embedded__MSP430\obj\Debug\Embedded__MSP430.Properties.Resources.resources
+C:\Users\LASI\Desktop\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.GenerateResource.cache
+C:\Users\LASI\Desktop\Embedded__MSP430\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
+C:\Users\LASI\Desktop\Embedded__MSP430\obj\Debug\Embedded__MSP430.exe
+C:\Users\LASI\Desktop\Embedded__MSP430\obj\Debug\Embedded__MSP430.pdb
