@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS
+CG_TOOL_ROOT := E:/ti/ccs/tools/compiler/ti-cgt-msp430_21.6.0.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -127,6 +127,12 @@ calibrador\ de\ msp430.out \
 EXE_OUTPUTS__QUOTED += \
 "calibrador de msp430.out" \
 
+BIN_OUTPUTS += \
+calibrador\ de\ msp430.hex \
+
+BIN_OUTPUTS__QUOTED += \
+"calibrador de msp430.hex" \
+
 
 # All Target
 all: calibrador\ de\ msp430.out
@@ -135,21 +141,29 @@ all: calibrador\ de\ msp430.out
 calibrador\ de\ msp430.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: MSP430 Linker'
-	"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/cl430" -vmsp --use_hw_mpy=none --define=__MSP430G2553__ -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"calibrador de msp430.map" --heap_size=80 --stack_size=80 -i"C:/ti/ccs1230/ccs/ccs_base/msp430/include" -i"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib" -i"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="calibrador de msp430_linkInfo.xml" --use_hw_mpy=none --rom_model -o "calibrador de msp430.out" $(ORDERED_OBJS)
+	"E:/ti/ccs/tools/compiler/ti-cgt-msp430_21.6.0.LTS/bin/cl430" -vmsp --use_hw_mpy=none --define=__MSP430G2553__ -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"calibrador de msp430.map" --heap_size=80 --stack_size=80 -i"E:/ti/ccs/ccs_base/msp430/include" -i"E:/ti/ccs/tools/compiler/ti-cgt-msp430_21.6.0.LTS/lib" -i"E:/ti/ccs/tools/compiler/ti-cgt-msp430_21.6.0.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="calibrador de msp430_linkInfo.xml" --use_hw_mpy=none --rom_model -o "calibrador de msp430.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
+	@echo ' '
+	@$(MAKE) --no-print-directory post-build
+
+calibrador\ de\ msp430.hex: $(EXE_OUTPUTS)
+	@echo 'Building secondary target: "$@"'
+	@echo 'Invoking: MSP430 Hex Utility'
+	"E:/ti/ccs/tools/compiler/ti-cgt-msp430_21.6.0.LTS/bin/hex430" --memwidth=8 --romwidth=8 --diag_wrap=off -o "calibrador de msp430.hex" $(EXE_OUTPUTS__QUOTED)
+	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
-	-$(RM) $(EXE_OUTPUTS__QUOTED)
+	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
 	-$(RM) "Est.obj" "main.obj" 
 	-$(RM) "Est.d" "main.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
 post-build:
-	-powershell.exe -ExecutionPolicy Bypass -File "C:\flash-ch340.ps1" "C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/hex430" "calibrador de msp430.out" "calibrador de msp430"
+	-powershell.exe -ExecutionPolicy Bypass -File "C:\flash-ch340.ps1" "E:/ti/ccs/tools/compiler/ti-cgt-msp430_21.6.0.LTS/bin/hex430" "calibrador de msp430.out" "calibrador de msp430"
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -89,9 +89,11 @@
             this.Frequency_comboBox.FormattingEnabled = true;
             this.Frequency_comboBox.Location = new System.Drawing.Point(100, 107);
             this.Frequency_comboBox.Name = "Frequency_comboBox";
+            this.Frequency_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.Frequency_comboBox.Size = new System.Drawing.Size(120, 21);
             this.Frequency_comboBox.TabIndex = 6;
-            this.Frequency_comboBox.Items.AddRange(new object[] { "1 MHz", "8 MHz", "16 MHz" });
+            this.Frequency_comboBox.Text = "1";
+            this.Frequency_comboBox.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" });
 
             // label4
             this.label4.AutoSize = true;

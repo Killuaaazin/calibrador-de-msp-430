@@ -3,6 +3,7 @@ using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Embedded__MSP430
@@ -10,19 +11,75 @@ namespace Embedded__MSP430
     public partial class Form1 : Form
     {
         private string serialBuffer = string.Empty;
+        private readonly System.Windows.Forms.Timer portsRefreshTimer;
+
         public Form1()
         {
             InitializeComponent();
             Baud_comboBox.Text = "2400";
+
+            portsRefreshTimer = new System.Windows.Forms.Timer();
+            portsRefreshTimer.Interval = 1000;
+            portsRefreshTimer.Tick += portsRefreshTimer_Tick;
+            portsRefreshTimer.Start();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Ports_comboBox.Items.Clear();
-            string[] ports = SerialPort.GetPortNames();
-            Ports_comboBox.Items.AddRange(ports);
+            AtualizarPortasSeriais();
             Connect_bt.Enabled = true;
             Disconnect_bt.Enabled = false;
+        }
+
+        private void portsRefreshTimer_Tick(object sender, EventArgs e)
+        {
+            AtualizarPortasSeriais();
+        }
+
+        private void AtualizarPortasSeriais()
+        {
+            try
+            {
+                string selectedPort = Ports_comboBox.Text;
+                string[] ports = SerialPort.GetPortNames();
+
+                bool changed = ports.Length != Ports_comboBox.Items.Count;
+                if (!changed)
+                {
+                    for (int i = 0; i < ports.Length; i++)
+                    {
+                        if (!Ports_comboBox.Items.Contains(ports[i]))
+                        {
+                            changed = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!changed) return;
+
+                Ports_comboBox.BeginUpdate();
+                try
+                {
+                    Ports_comboBox.Items.Clear();
+                    Ports_comboBox.Items.AddRange(ports);
+
+                    if (Array.IndexOf(ports, selectedPort) >= 0)
+                        Ports_comboBox.Text = selectedPort;
+                    else if (ports.Length > 0 && string.IsNullOrEmpty(selectedPort))
+                        Ports_comboBox.SelectedIndex = 0;
+                    else if (Array.IndexOf(ports, selectedPort) < 0)
+                        Ports_comboBox.SelectedIndex = -1;
+                }
+                finally
+                {
+                    Ports_comboBox.EndUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Erro ao atualizar portas seriais: " + ex.Message);
+            }
         }
 
         private void Connect_bt_Click(object sender, EventArgs e)
@@ -114,16 +171,31 @@ namespace Embedded__MSP430
             serialPort.DiscardInBuffer();
             serialPort.DiscardOutBuffer();
 
-            int freqMHz = 1;
-            if (!string.IsNullOrWhiteSpace(Frequency_comboBox.Text))
+            decimal freqMHz;
+            string frequencyText = Frequency_comboBox.Text.Trim().Replace("MHz", "").Trim();
+            if (!decimal.TryParse(frequencyText, NumberStyles.AllowDecimalPoint,
+                CultureInfo.CurrentCulture, out freqMHz) &&
+                !decimal.TryParse(frequencyText.Replace(',', '.'), NumberStyles.AllowDecimalPoint,
+                CultureInfo.InvariantCulture, out freqMHz))
             {
-                var parts = Frequency_comboBox.Text.Split(' ');
-                if (parts.Length > 0 && int.TryParse(parts[0], out int parsed))
-                    freqMHz = parsed;
+                MessageBox.Show("Informe uma frequência válida entre 1 e 16 MHz.", "Frequência inválida",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                calibrarBtn.Enabled = true;
+                serialPort.DataReceived += serialPort_DataReceived;
+                return;
+            }
+
+            if (freqMHz < 1m || freqMHz > 16m)
+            {
+                MessageBox.Show("A frequência deve estar entre 1 e 16 MHz.", "Frequência inválida",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                calibrarBtn.Enabled = true;
+                serialPort.DataReceived += serialPort_DataReceived;
+                return;
             }
 
             int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 2400;
-            long freqHz = (long)freqMHz * 1000000L;
+            decimal freqHz = freqMHz * 1000000m;
             int reload = (int)(freqHz / baudRate);
             if (reload < 1) reload = 1;
 
@@ -135,7 +207,7 @@ namespace Embedded__MSP430
             {
                 try
                 {
-                    // ETAPA 1: Envia pulsos para a Pré-Calibração forçada do MSP430
+                    // ETAPA 1: Pré-calibração a 1MHz para estabilizar a UART
                     bool msp_pronto = false;
                     int timeout = 0;
                     while (!msp_pronto && timeout < 50)
@@ -145,36 +217,33 @@ namespace Embedded__MSP430
                         if (serialPort.BytesToRead > 0)
                         {
                             if (serialPort.ReadExisting().Contains("R"))
-                            {
                                 msp_pronto = true;
-                            }
                         }
                         timeout++;
                     }
                     if (!msp_pronto) throw new Exception("O MSP430 não respondeu à pré-calibração.");
 
-                    // ETAPA 2: ENVIO DA CONFIGURAÇÃO COM CHAVE ANTI-LIXO (0xAA)
+                    // ETAPA 2: Envio da frequência alvo com chave anti-lixo (0xAA)
                     byte[] config_msg = new byte[] { 0xAA, byte_alto, byte_baixo };
                     serialPort.Write(config_msg, 0, 3);
-
                     Thread.Sleep(100);
 
-                    // ETAPA 3: Calibração Final e Captura Direta dos Bytes
+                    // ETAPA 3: Calibração Final e Leitura dos Registros de Retorno
                     bool calibrado = false;
+                    timeout = 0;
                     byte val1Bytes = 0;
                     byte val2Bytes = 0;
 
-                    while (!calibrado && timeout < 50)
+                    while (!calibrado && timeout < 250)
                     {
                         serialPort.Write(pulso, 0, 1);
                         Thread.Sleep(50);
 
-                        // Se o MSP430 terminou, ele envia 'q' seguido de DCOCTL e BCSCTL1 (3 bytes no total)
                         if (serialPort.BytesToRead >= 3)
                         {
                             byte resp1 = (byte)serialPort.ReadByte();
-                            byte resp2 = (byte)serialPort.ReadByte(); // DCOCTL
-                            byte resp3 = (byte)serialPort.ReadByte(); // BCSCTL1
+                            byte resp2 = (byte)serialPort.ReadByte(); // DCOCTL calibrado
+                            byte resp3 = (byte)serialPort.ReadByte(); // BCSCTL1 calibrado
 
                             if (resp1 == 'q')
                             {
@@ -216,6 +285,12 @@ namespace Embedded__MSP430
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (portsRefreshTimer != null)
+            {
+                portsRefreshTimer.Stop();
+                portsRefreshTimer.Dispose();
+            }
+
             if (serialPort != null && serialPort.IsOpen)
             {
                 serialPort.Close();
