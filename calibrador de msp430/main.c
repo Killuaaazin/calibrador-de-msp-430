@@ -30,9 +30,13 @@ int main(void) {
     // ========================================================
     // ETAPA 1: PRÉ-CALIBRAÇÃO DE SEGURANÇA (1 MHz)
     // ========================================================
+
     P1OUT |= BIT6;
     Set_DCO(416);
     P1OUT &= ~BIT6;
+
+    unsigned char dco_1mhz = DCOCTL;
+    unsigned char bcs_1mhz = BCSCTL1;
 
     // ========================================================
     // ETAPA 2: LEITURA SEGURA
@@ -68,10 +72,10 @@ int main(void) {
     // ========================================================
     // ETAPA 4: ENVIO DOS DADOS
     // ========================================================
-    if (CALBC1_1MHZ != 0xFF) {
-        BCSCTL1 = CALBC1_1MHZ;
-        DCOCTL = CALDCO_1MHZ;
-    }
+
+    BCSCTL1 = bcs_1mhz;
+    DCOCTL = dco_1mhz;
+
     UART_init_1MHz();
 
     // Inicia o sistema de temporização (interrupções globais) mais cedo
@@ -174,6 +178,23 @@ void UART_init_1MHz(void){
     UCA0BR0 = 0xA0;
     UCA0BR1 = 0x01;
     UCA0MCTL = UCBRS_6;
+    UCA0CTL1 &= ~UCSWRST;
+}
+
+
+void UART_init_dinamico(unsigned int delta) {
+    P1SEL  |= BIT1 + BIT2;
+    P1SEL2 |= BIT1 + BIT2;
+
+    UCA0CTL1 |= UCSWRST;
+    UCA0CTL1 |= UCSSEL_2;
+
+
+    UCA0BR0 = delta & 0xFF;
+    UCA0BR1 = (delta >> 8) & 0xFF;
+
+    UCA0MCTL = UCBRS_6;
+
     UCA0CTL1 &= ~UCSWRST;
 }
 
