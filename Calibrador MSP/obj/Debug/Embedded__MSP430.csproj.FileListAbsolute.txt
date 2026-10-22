@@ -68,3 +68,13 @@ C:\Users\joser\Desktop\calibrador\calibrador-de-msp-430\Calibrador MSP\obj\Debug
 C:\Users\joser\Desktop\calibrador\calibrador-de-msp-430\Calibrador MSP\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
 C:\Users\joser\Desktop\calibrador\calibrador-de-msp-430\Calibrador MSP\obj\Debug\Embedded__MSP430.exe
 C:\Users\joser\Desktop\calibrador\calibrador-de-msp-430\Calibrador MSP\obj\Debug\Embedded__MSP430.pdb
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.csproj.AssemblyReference.cache
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.Form1.resources
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.Properties.Resources.resources
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.csproj.GenerateResource.cache
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.exe
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.pdb
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Embedded__MSP430.exe.config
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Embedded__MSP430.exe
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Embedded__MSP430.pdb

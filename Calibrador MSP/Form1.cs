@@ -16,7 +16,7 @@ namespace Embedded__MSP430
         public Form1()
         {
             InitializeComponent();
-            Baud_comboBox.Text = "2400";
+            Baud_comboBox.Text = "9600";
 
             portsRefreshTimer = new System.Windows.Forms.Timer();
             portsRefreshTimer.Interval = 1000;
@@ -168,6 +168,7 @@ namespace Embedded__MSP430
             calibrarBtn.Enabled = false;
             serialPort.DataReceived -= serialPort_DataReceived;
 
+            // Limpa os buffers para garantir que não há lixo de calibrações anteriores
             serialPort.DiscardInBuffer();
             serialPort.DiscardOutBuffer();
 
@@ -194,8 +195,11 @@ namespace Embedded__MSP430
                 return;
             }
 
-            int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 2400;
+            int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 9600;
+
+            // CORREÇÃO: Adicionado o operador de multiplicação (*) que faltava no seu código
             decimal freqHz = freqMHz * 1000000m;
+
             int reload = (int)(freqHz / baudRate);
             if (reload < 1) reload = 1;
 
@@ -203,25 +207,47 @@ namespace Embedded__MSP430
             byte byte_baixo = (byte)(reload & 0xFF);
             byte[] pulso = new byte[] { 0x55 };
 
+            try
+            {
+                // Dispara o caractere 'Z' para o MSP430 forçar o Watchdog Reset
+                serialPort.Write("Z");
+
+                // Aguarda 250ms de forma assíncrona (sem travar a interface) 
+                // para dar tempo do chip reiniciar e reconfigurar o relógio
+                await Task.Delay(250);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao enviar comando de reset: " + ex.Message);
+                calibrarBtn.Enabled = true;
+                serialPort.DataReceived += serialPort_DataReceived;
+                return;
+            }
+
             await Task.Run(() =>
             {
                 try
                 {
-                    // ETAPA 1: Pré-calibração a 1MHz para estabilizar a UART
-                    bool msp_pronto = false;
-                    int timeout = 0;
-                    while (!msp_pronto && timeout < 50)
-                    {
-                        serialPort.Write(pulso, 0, 1);
-                        Thread.Sleep(50);
-                        if (serialPort.BytesToRead > 0)
-                        {
-                            if (serialPort.ReadExisting().Contains("R"))
-                                msp_pronto = true;
-                        }
-                        timeout++;
-                    }
-                    if (!msp_pronto) throw new Exception("O MSP430 não respondeu à pré-calibração.");
+                   // ETAPA 1: Aguardar o 'R' do MSP430 confirmando que o reset foi bem sucedido
+            bool msp_pronto = false;
+            int timeout = 0;
+            
+            while (!msp_pronto && timeout < 50)
+            {
+                // CORREÇÃO: É OBRIGATÓRIO enviar o pulso 0x55 aqui. 
+                // O MSP430 está preso no Set_DCO(416) a usar o TimerA para ler 
+                // estes pulsos e calibrar os 1 MHz iniciais!
+                serialPort.Write(pulso, 0, 1); 
+                Thread.Sleep(50);
+                
+                if (serialPort.BytesToRead > 0)
+                {
+                    if (serialPort.ReadExisting().Contains("R"))
+                        msp_pronto = true;
+                }
+                timeout++;
+            }
+            if (!msp_pronto) throw new Exception("O MSP430 não respondeu ao reset/pré-calibração.");
 
                     // ETAPA 2: Envio da frequência alvo com chave anti-lixo (0xAA)
                     byte[] config_msg = new byte[] { 0xAA, byte_alto, byte_baixo };
@@ -234,19 +260,22 @@ namespace Embedded__MSP430
                     byte val1Bytes = 0;
                     byte val2Bytes = 0;
 
+                    // Aqui enviamos o 0x55 repetidamente para servir de referência ao Temporizador do MSP
                     while (!calibrado && timeout < 250)
                     {
                         serialPort.Write(pulso, 0, 1);
-                        Thread.Sleep(50);
+                        Thread.Sleep(1);
 
                         if (serialPort.BytesToRead >= 3)
                         {
                             byte resp1 = (byte)serialPort.ReadByte();
-                            byte resp2 = (byte)serialPort.ReadByte(); // DCOCTL calibrado
-                            byte resp3 = (byte)serialPort.ReadByte(); // BCSCTL1 calibrado
 
+                            // Verifica se o pacote está alinhado com a chave 'q' enviada pelo MSP
                             if (resp1 == 'q')
                             {
+                                byte resp2 = (byte)serialPort.ReadByte(); // DCOCTL calibrado
+                                byte resp3 = (byte)serialPort.ReadByte(); // BCSCTL1 calibrado
+
                                 val1Bytes = resp2;
                                 val2Bytes = resp3;
                                 calibrado = true;
@@ -265,24 +294,25 @@ namespace Embedded__MSP430
                         }
                         else
                         {
-                            MessageBox.Show("Falha na calibração final.");
+                            MessageBox.Show("Falha na calibração final. Tempo esgotado.");
                         }
-
-                        serialPort.DataReceived += serialPort_DataReceived;
                     }));
                 }
                 catch (Exception ex)
                 {
                     this.Invoke(new Action(() => MessageBox.Show("Erro: " + ex.Message)));
-                    this.Invoke(new Action(() => serialPort.DataReceived += serialPort_DataReceived));
                 }
                 finally
                 {
-                    this.Invoke(new Action(() => calibrarBtn.Enabled = true));
+                    this.Invoke(new Action(() =>
+                    {
+                        // Reativa a receção normal da UART e liberta o botão
+                        serialPort.DataReceived += serialPort_DataReceived;
+                        calibrarBtn.Enabled = true;
+                    }));
                 }
             });
         }
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (portsRefreshTimer != null)

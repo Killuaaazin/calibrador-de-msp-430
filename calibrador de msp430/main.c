@@ -16,6 +16,10 @@ void Set_DCO(unsigned int Delta);
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;
 
+    // Atraso de boot para segurança do Gravador CCS (evita erro de sincronização)
+    volatile unsigned long i;
+    for(i = 0; i < 20000; i++);
+
     P1DIR &= ~BIT5;
     P1REN &= ~(BIT5 + BIT2);
     P1DIR |= tp + tu;
@@ -25,21 +29,21 @@ int main(void) {
     P1OUT |= tu;
 
     P1DIR |= BIT0 + BIT6;
+    P1REN |= BIT0 + BIT6;
     P1OUT &= ~(BIT0 + BIT6);
 
     // ========================================================
     // ETAPA 1: PRÉ-CALIBRAÇÃO DE SEGURANÇA (1 MHz)
     // ========================================================
-
     P1OUT |= BIT6;
-    Set_DCO(416);
+    Set_DCO(104); // <-- MUDOU DE 416 PARA 104 (1.000.000 / 9600)
     P1OUT &= ~BIT6;
 
     unsigned char dco_1mhz = DCOCTL;
     unsigned char bcs_1mhz = BCSCTL1;
 
     // ========================================================
-    // ETAPA 2: LEITURA SEGURA
+    // ETAPA 2: LEITURA SEGURA (Com proteção de Reset)
     // ========================================================
     UART_init_1MHz();
     UART_sendChar('R');
@@ -49,6 +53,11 @@ int main(void) {
     unsigned char sync;
     do {
         sync = UART_read_char();
+
+        // Se o aplicativo C# abortar e mandar um 'Z' enquanto espera
+        if (sync == 'Z') {
+            WDTCTL = 0;
+        }
     } while (sync != 0xAA);
 
     unsigned char byte_alto = UART_read_char();
@@ -70,22 +79,19 @@ int main(void) {
     unsigned char final_bcs = BCSCTL1;
 
     // ========================================================
-    // ETAPA 4: ENVIO DOS DADOS
+    // ETAPA 4: ENVIO DOS DADOS (Volta temporariamente a 1 MHz)
     // ========================================================
-
     BCSCTL1 = bcs_1mhz;
     DCOCTL = dco_1mhz;
 
     UART_init_1MHz();
 
-    // Inicia o sistema de temporização (interrupções globais) mais cedo
     setup_tick(TEMPO_TICK);
     __enable_interrupt();
 
     UART_sendChar('q');
     UART_sendChar(final_dco);
     UART_sendChar(final_bcs);
-
 
     Temporizador t_espera_tx;
     inicializa_temporizador(20, &t_espera_tx);
@@ -97,6 +103,7 @@ int main(void) {
     BCSCTL1 = final_bcs;
     DCOCTL = final_dco;
 
+    // Reajusta a velocidade da porta serial para a nova frequência do chip
     UART_init_dinamico(target_delta);
 
     Temporizador t_pisca;
@@ -107,10 +114,20 @@ int main(void) {
             reseta_temporizador(&t_pisca);
             P1OUT ^= BIT0 + BIT6;
         }
+
+        // Agora escuta perfeitamente o 'Z' em 8MHz, 12MHz, 16MHz, etc.
+        if (IFG2 & UCA0RXIFG) {
+            unsigned char comando = UCA0RXBUF;
+            if (comando == 'Z') {
+                WDTCTL = 0;
+            }
+        }
     }
 }
 
-// LÓGICA DE CALIBRAÇÃO
+// ========================================================
+// FUNÇÕES AUXILIARES E DE CALIBRAÇÃO
+// ========================================================
 void Set_DCO(unsigned int Delta) {
     unsigned int Compare, Oldcapture = 0;
 
@@ -132,7 +149,7 @@ void Set_DCO(unsigned int Delta) {
                 Compare = TACCR0;
                 Compare = Compare - Oldcapture;
 
-                if (Compare >= Delta - 2 && Compare <= Delta + 2) {
+                if (Compare >= Delta - 1 && Compare <= Delta + 1) {
                     break;
                 }
                 else if (Delta < Compare) {
@@ -175,27 +192,28 @@ void UART_init_1MHz(void){
     P1SEL2 |= BIT1 + BIT2;
     UCA0CTL1 |= UCSWRST;
     UCA0CTL1 |= UCSSEL_2;
-    UCA0BR0 = 0xA0;
-    UCA0BR1 = 0x01;
-    UCA0MCTL = UCBRS_6;
+
+    // Configuração exata para 9600 bps @ 1 MHz
+    UCA0BR0 = 104;     // <-- MUDOU DE 0xA0 (160) PARA 104
+    UCA0BR1 = 0x00;    // <-- MUDOU DE 0x01 PARA 0x00
+    UCA0MCTL = UCBRS_1; // Modulação recomendada para 9600
+
     UCA0CTL1 &= ~UCSWRST;
 }
 
-
 void UART_init_dinamico(unsigned int delta) {
-    P1SEL  |= BIT1 + BIT2;
+    /*P1SEL  |= BIT1 + BIT2;
     P1SEL2 |= BIT1 + BIT2;
 
     UCA0CTL1 |= UCSWRST;
-    UCA0CTL1 |= UCSSEL_2;
-
+    UCA0CTL1 |= UCSSEL_2;*/
 
     UCA0BR0 = delta & 0xFF;
     UCA0BR1 = (delta >> 8) & 0xFF;
 
     UCA0MCTL = UCBRS_6;
 
-    UCA0CTL1 &= ~UCSWRST;
+    //UCA0CTL1 &= ~UCSWRST;
 }
 
 #pragma vector=TIMER1_A1_VECTOR
