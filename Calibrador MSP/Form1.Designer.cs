@@ -44,88 +44,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.calibrarBtn = new System.Windows.Forms.Button();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
+            this.gravarCodigo = new System.Windows.Forms.Button();
             this.SuspendLayout();
-
-            // label1
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 30);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "COM Ports:";
-
-            // Ports_comboBox
-            this.Ports_comboBox.FormattingEnabled = true;
-            this.Ports_comboBox.Location = new System.Drawing.Point(100, 27);
-            this.Ports_comboBox.Name = "Ports_comboBox";
-            this.Ports_comboBox.Size = new System.Drawing.Size(120, 21);
-            this.Ports_comboBox.TabIndex = 1;
-
-            // label2
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 70);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Baud Rate:";
-
-            // Baud_comboBox
-            this.Baud_comboBox.FormattingEnabled = true;
-            this.Baud_comboBox.Location = new System.Drawing.Point(100, 67);
-            this.Baud_comboBox.Name = "Baud_comboBox";
-            this.Baud_comboBox.Size = new System.Drawing.Size(120, 21);
-            this.Baud_comboBox.TabIndex = 3;
-            this.Baud_comboBox.Items.AddRange(new object[] { "2400" });
-
-            // label3
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(30, 110);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Frequência:";
-
-            // Frequency_comboBox
-            this.Frequency_comboBox.FormattingEnabled = true;
-            this.Frequency_comboBox.Location = new System.Drawing.Point(100, 107);
-            this.Frequency_comboBox.Name = "Frequency_comboBox";
-            this.Frequency_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-            this.Frequency_comboBox.Size = new System.Drawing.Size(120, 21);
-            this.Frequency_comboBox.TabIndex = 6;
-            this.Frequency_comboBox.Text = "1";
-            this.Frequency_comboBox.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" });
-
-            // label4
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(30, 150);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(75, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Calibração 1:";
-
-            // calib1TextBox
-            this.calib1TextBox.Location = new System.Drawing.Point(120, 147);
-            this.calib1TextBox.Name = "calib1TextBox";
-            this.calib1TextBox.ReadOnly = true;
-            this.calib1TextBox.Size = new System.Drawing.Size(230, 20);
-            this.calib1TextBox.TabIndex = 9;
-
-            // label5
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(30, 185);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(75, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Calibração 2:";
-
-            // calib2TextBox
-            this.calib2TextBox.Location = new System.Drawing.Point(120, 182);
-            this.calib2TextBox.Name = "calib2TextBox";
-            this.calib2TextBox.ReadOnly = true;
-            this.calib2TextBox.Size = new System.Drawing.Size(230, 20);
-            this.calib2TextBox.TabIndex = 11;
-
+            // 
             // Connect_bt
+            // 
             this.Connect_bt.Location = new System.Drawing.Point(250, 25);
             this.Connect_bt.Name = "Connect_bt";
             this.Connect_bt.Size = new System.Drawing.Size(100, 25);
@@ -133,8 +56,9 @@
             this.Connect_bt.Text = "Conectar";
             this.Connect_bt.UseVisualStyleBackColor = true;
             this.Connect_bt.Click += new System.EventHandler(this.Connect_bt_Click);
-
+            // 
             // Disconnect_bt
+            // 
             this.Disconnect_bt.Location = new System.Drawing.Point(250, 65);
             this.Disconnect_bt.Name = "Disconnect_bt";
             this.Disconnect_bt.Size = new System.Drawing.Size(100, 25);
@@ -142,8 +66,114 @@
             this.Disconnect_bt.Text = "Desconectar";
             this.Disconnect_bt.UseVisualStyleBackColor = true;
             this.Disconnect_bt.Click += new System.EventHandler(this.Disconnect_bt_Click);
-
+            // 
+            // Ports_comboBox
+            // 
+            this.Ports_comboBox.FormattingEnabled = true;
+            this.Ports_comboBox.Location = new System.Drawing.Point(100, 27);
+            this.Ports_comboBox.Name = "Ports_comboBox";
+            this.Ports_comboBox.Size = new System.Drawing.Size(120, 21);
+            this.Ports_comboBox.TabIndex = 1;
+            // 
+            // Baud_comboBox
+            // 
+            this.Baud_comboBox.FormattingEnabled = true;
+            this.Baud_comboBox.Items.AddRange(new object[] {
+            "2400"});
+            this.Baud_comboBox.Location = new System.Drawing.Point(100, 67);
+            this.Baud_comboBox.Name = "Baud_comboBox";
+            this.Baud_comboBox.Size = new System.Drawing.Size(120, 21);
+            this.Baud_comboBox.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(30, 110);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(63, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Frequência:";
+            // 
+            // Frequency_comboBox
+            // 
+            this.Frequency_comboBox.FormattingEnabled = true;
+            this.Frequency_comboBox.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16"});
+            this.Frequency_comboBox.Location = new System.Drawing.Point(100, 107);
+            this.Frequency_comboBox.Name = "Frequency_comboBox";
+            this.Frequency_comboBox.Size = new System.Drawing.Size(120, 21);
+            this.Frequency_comboBox.TabIndex = 6;
+            this.Frequency_comboBox.Text = "1";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(30, 150);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Calibração 1:";
+            // 
+            // calib1TextBox
+            // 
+            this.calib1TextBox.Location = new System.Drawing.Point(120, 147);
+            this.calib1TextBox.Name = "calib1TextBox";
+            this.calib1TextBox.ReadOnly = true;
+            this.calib1TextBox.Size = new System.Drawing.Size(230, 20);
+            this.calib1TextBox.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(30, 185);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Calibração 2:";
+            // 
+            // calib2TextBox
+            // 
+            this.calib2TextBox.Location = new System.Drawing.Point(120, 182);
+            this.calib2TextBox.Name = "calib2TextBox";
+            this.calib2TextBox.ReadOnly = true;
+            this.calib2TextBox.Size = new System.Drawing.Size(230, 20);
+            this.calib2TextBox.TabIndex = 11;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 30);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "COM Ports:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(30, 70);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Baud Rate:";
+            // 
             // calibrarBtn
+            // 
             this.calibrarBtn.Location = new System.Drawing.Point(30, 220);
             this.calibrarBtn.Name = "calibrarBtn";
             this.calibrarBtn.Size = new System.Drawing.Size(320, 40);
@@ -151,11 +181,23 @@
             this.calibrarBtn.Text = "Calibrar MSP430";
             this.calibrarBtn.UseVisualStyleBackColor = true;
             this.calibrarBtn.Click += new System.EventHandler(this.calibrarBtn_Click);
-
+            // 
+            // gravarCodigo
+            // 
+            this.gravarCodigo.Location = new System.Drawing.Point(250, 104);
+            this.gravarCodigo.Name = "gravarCodigo";
+            this.gravarCodigo.Size = new System.Drawing.Size(100, 25);
+            this.gravarCodigo.TabIndex = 12;
+            this.gravarCodigo.Text = "Gravar";
+            this.gravarCodigo.UseVisualStyleBackColor = true;
+            this.gravarCodigo.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 300);
+            this.ClientSize = new System.Drawing.Size(396, 305);
+            this.Controls.Add(this.gravarCodigo);
             this.Controls.Add(this.calibrarBtn);
             this.Controls.Add(this.calib2TextBox);
             this.Controls.Add(this.label5);
@@ -176,6 +218,9 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
+
+        private System.Windows.Forms.Button gravarCodigo;
     }
 }

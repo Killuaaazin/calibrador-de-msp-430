@@ -326,5 +326,94 @@ namespace Embedded__MSP430
                 serialPort.Close();
             }
         }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            //Pega a porta do ComboBox para funcionar mesmo se o app não estiver "Conectado"
+            string comPort = Ports_comboBox.Text;
+            if (string.IsNullOrEmpty(comPort))
+            {
+                MessageBox.Show("Selecione a porta COM primeiro!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            //Liberação da porta serial
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.DataReceived -= serialPort_DataReceived;
+                serialPort.DiscardInBuffer();
+                serialPort.DiscardOutBuffer();
+                serialPort.DtrEnable = false;
+                serialPort.RtsEnable = false;
+                serialPort.Close();
+            }
+
+            // Aguarda de forma assíncrona para o Windows libertar o driver USB 
+            await Task.Delay(800);
+
+            try
+            {
+                string appFolder = AppDomain.CurrentDomain.BaseDirectory;
+                string bslPath = System.IO.Path.Combine(appFolder, "BSLDEMO-2.01c.exe");
+                string txtPath = System.IO.Path.Combine(appFolder, "firmware.txt");
+
+                if (!System.IO.File.Exists(bslPath))
+                {
+                    MessageBox.Show("BSLDEMO não encontrado em:\n" + bslPath, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (!System.IO.File.Exists(txtPath))
+                {
+                    MessageBox.Show("Arquivo não encontrado!\nRenomeie seu código compilado para 'firmware.txt' e coloque na pasta do programa.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string arguments = $"-c{comPort} -m1 -ij -s2 +epr \"{txtPath}\"";
+
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                process.StartInfo.FileName = bslPath;
+                process.StartInfo.Arguments = arguments;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.CreateNoWindow = true;
+
+                process.Start();
+
+                // Lê a saída sem travar o aplicativo
+                string output = await process.StandardOutput.ReadToEndAsync();
+
+                // Aguarda o gravador terminar em background
+                await Task.Run(() => process.WaitForExit());
+
+                // Verifica o sucesso
+                if (process.ExitCode == 0)
+                {
+                    System.Media.SystemSounds.Exclamation.Play();
+                    MessageBox.Show("Firmware gravado com sucesso!\nO MSP430 já vai reiniciar.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    System.Media.SystemSounds.Hand.Play();
+                    MessageBox.Show("Falha na gravação. O chip respondeu?\n\nLOG:\n" + output, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro de execução: " + ex.Message, "Erro Crítico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // Reconecta automaticamente caso o aplicativo estivesse conectado antes de gravar
+                if (Connect_bt.Enabled == false)
+                {
+                    try
+                    {
+                        serialPort.Open();
+                        serialPort.DataReceived += serialPort_DataReceived;
+                    }
+                    catch { }
+                }
+            }
+        }
     }
 }
