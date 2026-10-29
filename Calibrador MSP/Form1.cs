@@ -16,7 +16,7 @@ namespace Embedded__MSP430
         public Form1()
         {
             InitializeComponent();
-            Baud_comboBox.Text = "9600";
+            Baud_comboBox.Text = "2400";
 
             portsRefreshTimer = new System.Windows.Forms.Timer();
             portsRefreshTimer.Interval = 1000;
@@ -160,7 +160,7 @@ namespace Embedded__MSP430
             }
         }
 
-        // FUNÇÃO EXCLUSIVA DE CALIBRAÇÃO ATUALIZADA
+        
         public async void calibrarBtn_Click(object sender, EventArgs e)
         {
             if (serialPort == null || !serialPort.IsOpen) return;
@@ -195,7 +195,7 @@ namespace Embedded__MSP430
                 return;
             }
 
-            int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 9600;
+            int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 2400;
 
             // CORREÇÃO: Adicionado o operador de multiplicação (*) que faltava no seu código
             decimal freqHz = freqMHz * 1000000m;
@@ -209,11 +209,16 @@ namespace Embedded__MSP430
 
             try
             {
-                // Dispara o caractere 'Z' para o MSP430 forçar o Watchdog Reset
-                serialPort.Write("Z");
+                // Dispara ambos os pinos para garantir que um deles faz o reset
+                serialPort.DtrEnable = true;
+                serialPort.RtsEnable = true;
 
-                // Aguarda 250ms de forma assíncrona (sem travar a interface) 
-                // para dar tempo do chip reiniciar e reconfigurar o relógio
+                await Task.Delay(100);  // Aumentado para 100ms para o hardware "sentir" bem o pulso
+
+                serialPort.DtrEnable = false;
+                serialPort.RtsEnable = false;   
+
+                // Aguarda o arranque do chip
                 await Task.Delay(250);
             }
             catch (Exception ex)
@@ -232,7 +237,7 @@ namespace Embedded__MSP430
             bool msp_pronto = false;
             int timeout = 0;
             
-            while (!msp_pronto && timeout < 50)
+            while (!msp_pronto && timeout < 200)
             {
                 // CORREÇÃO: É OBRIGATÓRIO enviar o pulso 0x55 aqui. 
                 // O MSP430 está preso no Set_DCO(416) a usar o TimerA para ler 
@@ -261,7 +266,7 @@ namespace Embedded__MSP430
                     byte val2Bytes = 0;
 
                     // Aqui enviamos o 0x55 repetidamente para servir de referência ao Temporizador do MSP
-                    while (!calibrado && timeout < 250)
+                    while (!calibrado && timeout < 1000)
                     {
                         serialPort.Write(pulso, 0, 1);
                         Thread.Sleep(1);
@@ -413,6 +418,46 @@ namespace Embedded__MSP430
                     }
                     catch { }
                 }
+            }
+        }
+
+        private async void resetBtn_Click(object sender, EventArgs e)
+        {
+            if (serialPort == null || !serialPort.IsOpen)
+            {
+                MessageBox.Show("Conecte-se à porta COM antes de resetar o MSP430.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            resetBtn.Enabled = false;
+            serialPort.DataReceived -= serialPort_DataReceived;
+
+            try
+            {
+                serialBuffer = string.Empty;
+                serialPort.DiscardInBuffer();
+                serialPort.DiscardOutBuffer();
+                calib1TextBox.Clear();
+                calib2TextBox.Clear();
+
+                serialPort.DtrEnable = true;
+                serialPort.RtsEnable = true;
+                await Task.Delay(100);
+                serialPort.DtrEnable = false;
+                serialPort.RtsEnable = false;
+
+                await Task.Delay(250);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao resetar o MSP430: " + ex.Message, "Erro",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                serialPort.DataReceived += serialPort_DataReceived;
+                resetBtn.Enabled = true;
             }
         }
     }

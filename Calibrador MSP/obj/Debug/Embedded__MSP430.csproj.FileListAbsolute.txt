@@ -73,8 +73,12 @@ C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\De
 C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.Properties.Resources.resources
 C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.csproj.GenerateResource.cache
 C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.csproj.CoreCompileInputs.cache
-C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.exe
-C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Embedded__MSP430.pdb
-C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Embedded__MSP430.exe.config
-C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Embedded__MSP430.exe
-C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Embedded__MSP430.pdb
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Calibrador de MSP430.exe.config
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Calibrador de MSP430.exe.manifest
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Calibrador de MSP430.application
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Calibrador de MSP430.exe
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\bin\Debug\Calibrador de MSP430.pdb
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Calibrador de MSP430.exe.manifest
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Calibrador de MSP430.application
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Calibrador de MSP430.exe
+C:\Users\LASI\Desktop\calibrador de msp teste1.0 - Ricardo\Calibrador MSP\obj\Debug\Calibrador de MSP430.pdb

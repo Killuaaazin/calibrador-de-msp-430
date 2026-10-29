@@ -35,8 +35,9 @@ int main(void) {
     // ========================================================
     // ETAPA 1: PRÉ-CALIBRAÇÃO DE SEGURANÇA (1 MHz)
     // ========================================================
+
     P1OUT |= BIT6;
-    Set_DCO(104); // <-- MUDOU DE 416 PARA 104 (1.000.000 / 9600)
+    Set_DCO(416);
     P1OUT &= ~BIT6;
 
     unsigned char dco_1mhz = DCOCTL;
@@ -51,14 +52,9 @@ int main(void) {
     P1OUT |= BIT0;
 
     unsigned char sync;
-    do {
-        sync = UART_read_char();
-
-        // Se o aplicativo C# abortar e mandar um 'Z' enquanto espera
-        if (sync == 'Z') {
-            WDTCTL = 0;
-        }
-    } while (sync != 0xAA);
+     do {
+         sync = UART_read_char();
+     } while (sync != 0xAA);
 
     unsigned char byte_alto = UART_read_char();
     unsigned char byte_baixo = UART_read_char();
@@ -114,14 +110,6 @@ int main(void) {
             reseta_temporizador(&t_pisca);
             P1OUT ^= BIT0 + BIT6;
         }
-
-        // Agora escuta perfeitamente o 'Z' em 8MHz, 12MHz, 16MHz, etc.
-        if (IFG2 & UCA0RXIFG) {
-            unsigned char comando = UCA0RXBUF;
-            if (comando == 'Z') {
-                WDTCTL = 0;
-            }
-        }
     }
 }
 
@@ -149,7 +137,7 @@ void Set_DCO(unsigned int Delta) {
                 Compare = TACCR0;
                 Compare = Compare - Oldcapture;
 
-                if (Compare >= Delta - 1 && Compare <= Delta + 1) {
+                if (Compare == Delta) {
                     break;
                 }
                 else if (Delta < Compare) {
@@ -192,28 +180,22 @@ void UART_init_1MHz(void){
     P1SEL2 |= BIT1 + BIT2;
     UCA0CTL1 |= UCSWRST;
     UCA0CTL1 |= UCSSEL_2;
-
-    // Configuração exata para 9600 bps @ 1 MHz
-    UCA0BR0 = 104;     // <-- MUDOU DE 0xA0 (160) PARA 104
-    UCA0BR1 = 0x00;    // <-- MUDOU DE 0x01 PARA 0x00
-    UCA0MCTL = UCBRS_1; // Modulação recomendada para 9600
-
+    UCA0BR0 = 0xA0;
+    UCA0BR1 = 0x01;
+    UCA0MCTL = UCBRS_6;
     UCA0CTL1 &= ~UCSWRST;
 }
 
 void UART_init_dinamico(unsigned int delta) {
-    /*P1SEL  |= BIT1 + BIT2;
-    P1SEL2 |= BIT1 + BIT2;
 
     UCA0CTL1 |= UCSWRST;
-    UCA0CTL1 |= UCSSEL_2;*/
 
     UCA0BR0 = delta & 0xFF;
     UCA0BR1 = (delta >> 8) & 0xFF;
-
     UCA0MCTL = UCBRS_6;
 
-    //UCA0CTL1 &= ~UCSWRST;
+
+    UCA0CTL1 &= ~UCSWRST;
 }
 
 #pragma vector=TIMER1_A1_VECTOR

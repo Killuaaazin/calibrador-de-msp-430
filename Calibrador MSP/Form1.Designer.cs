@@ -17,6 +17,7 @@
         private System.Windows.Forms.TextBox calib1TextBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox calib2TextBox;
+        private System.Windows.Forms.Button resetBtn;
 
         protected override void Dispose(bool disposing)
         {
@@ -45,6 +46,7 @@
             this.calibrarBtn = new System.Windows.Forms.Button();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
             this.gravarCodigo = new System.Windows.Forms.Button();
+            this.resetBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Connect_bt
@@ -192,11 +194,22 @@
             this.gravarCodigo.UseVisualStyleBackColor = true;
             this.gravarCodigo.Click += new System.EventHandler(this.button1_Click);
             // 
+            // resetBtn
+            // 
+            this.resetBtn.Location = new System.Drawing.Point(30, 270);
+            this.resetBtn.Name = "resetBtn";
+            this.resetBtn.Size = new System.Drawing.Size(320, 30);
+            this.resetBtn.TabIndex = 13;
+            this.resetBtn.Text = "Resetar MSP430";
+            this.resetBtn.UseVisualStyleBackColor = true;
+            this.resetBtn.Click += new System.EventHandler(this.resetBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 305);
+            this.ClientSize = new System.Drawing.Size(396, 320);
+            this.Controls.Add(this.resetBtn);
             this.Controls.Add(this.gravarCodigo);
             this.Controls.Add(this.calibrarBtn);
             this.Controls.Add(this.calib2TextBox);
