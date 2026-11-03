@@ -80,47 +80,31 @@
             // Baud_comboBox
             // 
             this.Baud_comboBox.FormattingEnabled = true;
-            this.Baud_comboBox.Items.AddRange(new object[] {
-            "2400"});
+            this.Baud_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Baud_comboBox.Enabled = false;
             this.Baud_comboBox.Location = new System.Drawing.Point(100, 67);
             this.Baud_comboBox.Name = "Baud_comboBox";
             this.Baud_comboBox.Size = new System.Drawing.Size(120, 21);
             this.Baud_comboBox.TabIndex = 3;
+            this.Baud_comboBox.Text = "2400";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(30, 110);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
+            this.label3.Size = new System.Drawing.Size(91, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Frequência:";
+            this.label3.Text = "Frequência (MHz):";
             // 
             // Frequency_comboBox
             // 
             this.Frequency_comboBox.FormattingEnabled = true;
-            this.Frequency_comboBox.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16"});
-            this.Frequency_comboBox.Location = new System.Drawing.Point(100, 107);
+            this.Frequency_comboBox.Location = new System.Drawing.Point(130, 107);
             this.Frequency_comboBox.Name = "Frequency_comboBox";
             this.Frequency_comboBox.Size = new System.Drawing.Size(120, 21);
             this.Frequency_comboBox.TabIndex = 6;
-            this.Frequency_comboBox.Text = "1";
+            this.Frequency_comboBox.Text = "1,0";
             // 
             // label4
             // 
@@ -129,7 +113,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 13);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Calibração 1:";
+            this.label4.Text = "DCOCTL:";
             // 
             // calib1TextBox
             // 
@@ -146,7 +130,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(69, 13);
             this.label5.TabIndex = 10;
-            this.label5.Text = "Calibração 2:";
+            this.label5.Text = "BCSCTL1:";
             // 
             // calib2TextBox
             // 

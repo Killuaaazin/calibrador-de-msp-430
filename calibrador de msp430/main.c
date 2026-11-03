@@ -8,7 +8,6 @@ volatile unsigned int tick = 0;
 
 void setup_tick(unsigned int tempo_tick);
 void UART_init_1MHz(void);
-void UART_init_dinamico(unsigned int delta);
 unsigned char UART_read_char(void);
 void UART_sendChar(char c);
 void Set_DCO(unsigned int Delta);
@@ -16,21 +15,27 @@ void Set_DCO(unsigned int Delta);
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;
 
-    // Atraso de boot para segurança do Gravador CCS (evita erro de sincronização)
+    P1REN = 0xFF; P1DIR = 0; P2REN = (~BIT4) & 0xFF; P2DIR = 0; P3REN = (~BIT3)&0xFF; P3DIR = BIT3 ; P1OUT  = P2OUT = P3OUT = 0;
+
+
     volatile unsigned long i;
     for(i = 0; i < 20000; i++);
 
-    P1DIR &= ~BIT5;
-    P1REN &= ~(BIT5 + BIT2);
+
+    P1DIR &= ~(BIT5 + BIT1);
     P1DIR |= tp + tu;
-    P1REN &= ~tp;
+    P1REN &= ~(BIT5 + BIT2 + tp);
+    P1REN |= BIT1 | tu;
     P1OUT &= ~tp;
-    P1REN |= tu;
-    P1OUT |= tu;
+    P1OUT |= tu| BIT1;
 
     P1DIR |= BIT0 + BIT6;
     P1REN |= BIT0 + BIT6;
     P1OUT &= ~(BIT0 + BIT6);
+
+    P2DIR |= BIT4;
+    P2REN |= BIT4;
+    P2OUT &= ~BIT4;
 
     // ========================================================
     // ETAPA 1: PRÉ-CALIBRAÇÃO DE SEGURANÇA (1 MHz)
@@ -50,6 +55,7 @@ int main(void) {
     UART_sendChar('R');
 
     P1OUT |= BIT0;
+    //indica que está pronto para calibrar
 
     unsigned char sync;
      do {
@@ -66,10 +72,12 @@ int main(void) {
     // ETAPA 3: CALIBRAÇÃO FINAL
     // ========================================================
     P1OUT |= BIT0 + BIT6;
+    //indica que começou a calibração
 
     Set_DCO(target_delta);
 
     P1OUT &= ~(BIT0 + BIT6);
+    //indica que terminou a calibração
 
     unsigned char final_dco = DCOCTL;
     unsigned char final_bcs = BCSCTL1;
@@ -99,9 +107,6 @@ int main(void) {
     BCSCTL1 = final_bcs;
     DCOCTL = final_dco;
 
-    // Reajusta a velocidade da porta serial para a nova frequência do chip
-    UART_init_dinamico(target_delta);
-
     Temporizador t_pisca;
     inicializa_temporizador(100, &t_pisca);
 
@@ -109,6 +114,9 @@ int main(void) {
         if (passou_tempo(&t_pisca)) {
             reseta_temporizador(&t_pisca);
             P1OUT ^= BIT0 + BIT6;
+            //indica finalização da calibração
+
+            P2OUT ^= BIT4;
         }
     }
 }
@@ -183,18 +191,6 @@ void UART_init_1MHz(void){
     UCA0BR0 = 0xA0;
     UCA0BR1 = 0x01;
     UCA0MCTL = UCBRS_6;
-    UCA0CTL1 &= ~UCSWRST;
-}
-
-void UART_init_dinamico(unsigned int delta) {
-
-    UCA0CTL1 |= UCSWRST;
-
-    UCA0BR0 = delta & 0xFF;
-    UCA0BR1 = (delta >> 8) & 0xFF;
-    UCA0MCTL = UCBRS_6;
-
-
     UCA0CTL1 &= ~UCSWRST;
 }
 

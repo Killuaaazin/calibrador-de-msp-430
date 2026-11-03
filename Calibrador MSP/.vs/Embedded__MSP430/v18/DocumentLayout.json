@@ -24,9 +24,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{53382CD1-CD49-4186-A847-FCC4452A2C06}|Embedded__MSP430.csproj|C:\\Users\\LASI\\Desktop\\calibrador de msp teste1.0 - Ricardo\\Calibrador MSP\\form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
       "RelativeMoniker": "D:0:0:{53382CD1-CD49-4186-A847-FCC4452A2C06}|Embedded__MSP430.csproj|solutionrelative:form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53382CD1-CD49-4186-A847-FCC4452A2C06}|Embedded__MSP430.csproj|c:\\users\\lasi\\desktop\\calibrador de msp teste1.0 - ricardo\\calibrador msp\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,7 +43,7 @@
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\Users\\LASI\\Desktop\\calibrador de msp teste1.0 - Ricardo\\Calibrador MSP\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAKcBAAAAAAAAAAA6wMIBAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAgwAsAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-08T19:29:29.234Z",
               "IsPinned": true,
@@ -61,8 +58,7 @@
               "ToolTip": "C:\\Users\\LASI\\Desktop\\calibrador de msp teste1.0 - Ricardo\\Calibrador MSP\\Form1.cs [Design]",
               "RelativeToolTip": "Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-07T18:47:51.416Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-05-07T18:47:51.416Z"
             },
             {
               "$type": "Document",
@@ -73,8 +69,7 @@
               "ToolTip": "C:\\Users\\LASI\\Desktop\\calibrador de msp teste1.0 - Ricardo\\Calibrador MSP\\Embedded__MSP430.csproj",
               "RelativeToolTip": "Embedded__MSP430.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-06-23T13:41:59.972Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-23T13:41:59.972Z"
             },
             {
               "$type": "Document",
@@ -96,10 +91,9 @@
               "RelativeDocumentMoniker": "Form1.Designer.cs",
               "ToolTip": "C:\\Users\\LASI\\Desktop\\calibrador de msp teste1.0 - Ricardo\\Calibrador MSP\\Form1.Designer.cs",
               "RelativeToolTip": "Form1.Designer.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAArwFMAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAgwAoAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T17:23:30.884Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-12T17:23:30.884Z"
             },
             {
               "$type": "Document",
@@ -110,8 +104,7 @@
               "ToolTip": "C:\\Users\\LASI\\Desktop\\calibrador de msp teste1.0 - Ricardo\\Calibrador MSP\\Form1.resx",
               "RelativeToolTip": "Form1.resx",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2026-05-12T17:23:30.859Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-12T17:23:30.859Z"
             }
           ]
         }

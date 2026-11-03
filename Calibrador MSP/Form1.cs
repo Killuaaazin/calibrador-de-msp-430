@@ -17,6 +17,7 @@ namespace Embedded__MSP430
         {
             InitializeComponent();
             Baud_comboBox.Text = "2400";
+            Baud_comboBox.Enabled = false;
 
             portsRefreshTimer = new System.Windows.Forms.Timer();
             portsRefreshTimer.Interval = 1000;
@@ -97,9 +98,11 @@ namespace Embedded__MSP430
 
         private void Disconnect_bt_Click(object sender, EventArgs e)
         {
-            serialPort.Close();
+            serialPort.DataReceived -= serialPort_DataReceived;
+            if (serialPort.IsOpen)
+                serialPort.Close();
             Ports_comboBox.Enabled = true;
-            Baud_comboBox.Enabled = true;
+            Baud_comboBox.Enabled = false;
             Connect_bt.Enabled = true;
             Disconnect_bt.Enabled = false;
         }
@@ -108,17 +111,32 @@ namespace Embedded__MSP430
         {
             try
             {
-                if (Ports_comboBox.Text != "" && Baud_comboBox.Text != "")
+                string portName = (Ports_comboBox.SelectedItem as string) ?? Ports_comboBox.Text.Trim();
+                if (string.IsNullOrEmpty(portName))
                 {
-                    serialPort.PortName = Ports_comboBox.Text;
-                    serialPort.BaudRate = int.Parse(Baud_comboBox.Text);
-                    serialPort.Open();
-                    return true;
+                    MessageBox.Show("Selecione uma porta COM.", "Aviso", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return false;
                 }
+
+                if (serialPort.IsOpen)
+                    serialPort.Close();
+
+                serialPort.PortName = portName;
+                serialPort.BaudRate = 2400;
+                serialPort.Parity = Parity.None;
+                serialPort.DataBits = 8;
+                serialPort.StopBits = StopBits.One;
+                serialPort.Handshake = Handshake.None;
+                serialPort.DtrEnable = false;
+                serialPort.RtsEnable = false;
+                serialPort.Open();
+                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Não foi possível abrir a porta serial.\n\n" + ex.Message,
+                    "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return false;
         }
@@ -179,28 +197,29 @@ namespace Embedded__MSP430
                 !decimal.TryParse(frequencyText.Replace(',', '.'), NumberStyles.AllowDecimalPoint,
                 CultureInfo.InvariantCulture, out freqMHz))
             {
-                MessageBox.Show("Informe uma frequência válida entre 1 e 16 MHz.", "Frequência inválida",
+                MessageBox.Show("Informe uma frequência válida entre 0,1 e 20 MHz.", "Frequência inválida",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 calibrarBtn.Enabled = true;
                 serialPort.DataReceived += serialPort_DataReceived;
                 return;
             }
 
-            if (freqMHz < 1m || freqMHz > 16m)
+            if (freqMHz < 0.1m || freqMHz > 20m)
             {
-                MessageBox.Show("A frequência deve estar entre 1 e 16 MHz.", "Frequência inválida",
+                MessageBox.Show("A frequência deve estar entre 0,1 e 20 MHz.", "Frequência inválida",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 calibrarBtn.Enabled = true;
                 serialPort.DataReceived += serialPort_DataReceived;
                 return;
             }
 
-            int baudRate = serialPort.BaudRate > 0 ? serialPort.BaudRate : 2400;
+            const int baudRate = 2400;
+            serialPort.BaudRate = baudRate;
 
-            // CORREÇÃO: Adicionado o operador de multiplicação (*) que faltava no seu código
+            
             decimal freqHz = freqMHz * 1000000m;
 
-            int reload = (int)(freqHz / baudRate);
+            int reload = (int)Math.Round((double)freqHz / baudRate);
             if (reload < 1) reload = 1;
 
             byte byte_alto = (byte)((reload >> 8) & 0xFF);
@@ -209,11 +228,11 @@ namespace Embedded__MSP430
 
             try
             {
-                // Dispara ambos os pinos para garantir que um deles faz o reset
+             
                 serialPort.DtrEnable = true;
                 serialPort.RtsEnable = true;
 
-                await Task.Delay(100);  // Aumentado para 100ms para o hardware "sentir" bem o pulso
+                await Task.Delay(100);  
 
                 serialPort.DtrEnable = false;
                 serialPort.RtsEnable = false;   
@@ -237,11 +256,9 @@ namespace Embedded__MSP430
             bool msp_pronto = false;
             int timeout = 0;
             
-            while (!msp_pronto && timeout < 200)
+             while (!msp_pronto && timeout < 400)
             {
-                // CORREÇÃO: É OBRIGATÓRIO enviar o pulso 0x55 aqui. 
-                // O MSP430 está preso no Set_DCO(416) a usar o TimerA para ler 
-                // estes pulsos e calibrar os 1 MHz iniciais!
+                // ETAPA 1: Envio do pulso de referência (0x55) para o MSP430
                 serialPort.Write(pulso, 0, 1); 
                 Thread.Sleep(50);
                 
@@ -266,7 +283,7 @@ namespace Embedded__MSP430
                     byte val2Bytes = 0;
 
                     // Aqui enviamos o 0x55 repetidamente para servir de referência ao Temporizador do MSP
-                    while (!calibrado && timeout < 1000)
+                     while (!calibrado && timeout < 40000)
                     {
                         serialPort.Write(pulso, 0, 1);
                         Thread.Sleep(1);
