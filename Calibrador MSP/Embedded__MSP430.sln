@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.10.12217.157 stable
+VisualStudioVersion = 18.10.12217.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Embedded__MSP430", "Embedded__MSP430.csproj", "{53382CD1-CD49-4186-A847-FCC4452A2C06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calibrador_de_MSP430", "Calibrador_de_MSP430.csproj", "{53382CD1-CD49-4186-A847-FCC4452A2C06}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{34DA7E03-E964-4F0B-B8AE-9398D00D55DB}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador", "..\Instalador\Instalador.vdproj", "{682A4D8D-F2F4-CE23-05C1-0BB629CD0FC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,8 @@ Global
 		{53382CD1-CD49-4186-A847-FCC4452A2C06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53382CD1-CD49-4186-A847-FCC4452A2C06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53382CD1-CD49-4186-A847-FCC4452A2C06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{682A4D8D-F2F4-CE23-05C1-0BB629CD0FC0}.Debug|Any CPU.ActiveCfg = Debug
+		{682A4D8D-F2F4-CE23-05C1-0BB629CD0FC0}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
